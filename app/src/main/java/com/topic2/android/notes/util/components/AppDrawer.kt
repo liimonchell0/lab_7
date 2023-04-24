@@ -19,6 +19,7 @@ import com.topic2.android.notes.theme.NotesTheme
 import com.topic2.android.notes.routing.NotesRouter
 import com.topic2.android.notes.routing.Screen
 import com.topic2.android.notes.theme.NotesThemeSettings
+import androidx.compose.ui.graphics.Shape
 
 @Composable
 private fun AppDrawerHeader(){
