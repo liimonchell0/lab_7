@@ -10,16 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.topic2.android.notes.theme.rwGreen
 
-
 @Composable
 fun Note(){
     Row(modifier = Modifier.fillMaxWidth()) {
 
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .background(rwGreen)
-        )
+        NoteColor(
+            color = rwGreen,
+            size =40.dp,
+            padding =4.dp,
+            border=1.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = "Заголовок", maxLines = 1)
             Text(text = "Содержание", maxLines = 1)
@@ -32,11 +31,7 @@ fun Note(){
 
     }
 
-}
-
-
-
-@Preview
+}@Preview
 @Composable
 fun NotePreview(){
     Note()
