@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import com.topic2.android.notes.util.components.TopAppBar
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun NotesScreen(viewModel: MainViewModel) {
@@ -23,18 +24,39 @@ fun NotesScreen(viewModel: MainViewModel) {
             onIconClick ={}
         )
 
-        LazyColumn {
-            items(count = notes.size) { noteIndex ->
-                val note = notes[noteIndex]
-                Note(
-                    note = note,
-                    onNoteClick = {viewModel.onNoteClick(it)},
-                    onNoteCheckedChange = {viewModel.onNoteCheckedChange(it)}
-                )
-            }
-        }
+        NotesList(notes = notes,
+            onNoteCheckedChange = {viewModel.onNoteCheckedChange(it)} ,
+            onNoteClick ={viewModel.onNoteClick(it)} )
     }
-
-
 }
 
+@Composable
+private fun NotesList(
+    notes: List<NoteModel>,
+    onNoteCheckedChange: (NoteModel) -> Unit,
+    onNoteClick:(NoteModel) -> Unit
+){
+    LazyColumn{
+        items(count = notes.size){noteIndex ->
+            val note = notes[noteIndex]
+            Note(note = note,
+                onNoteClick = onNoteClick,
+                onNoteCheckedChange = onNoteCheckedChange
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun  NotesListPreview(){
+    NotesList(
+        notes = listOf(
+            NoteModel(1,"Note 1", "Content 1", null),
+            NoteModel(2,"Note 2", "Content 2", false) ,
+            NoteModel(3,"Note 1", "Content 3", true)
+        ),
+        onNoteCheckedChange = {},
+        onNoteClick = {}
+    )
+}
