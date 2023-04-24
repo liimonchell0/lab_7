@@ -32,6 +32,10 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
         }
     }
+
+    fun onNoteClick(it: NoteModel) {
+
+    }
 }
 
 
