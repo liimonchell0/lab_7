@@ -67,6 +67,7 @@ fun NotesScreen(viewModel: MainViewModel) {
 }
 
 
+@Composable
 private fun NotesList(
     notes: List<NoteModel>,
     onNoteCheckedChange: (NoteModel) -> Unit,
