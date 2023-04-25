@@ -1,6 +1,7 @@
 package com.topic2.android.notes.util.components.screens
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.clickable
@@ -51,6 +52,15 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
     val moveNoteToTrashDialogShowState: MutableState<Boolean> = rememberSaveable{
         mutableStateOf(false)
     }
+    BackHandler(
+        onBack = {
+            if (bottomDrawerState.isOpen){
+                coroutineScope.launch{bottomDrawerState.close()}
+            } else{
+                NotesRouter.navigateTo(Screen.Notes)
+            }
+        }
+    )
     Scaffold(topBar = {
         val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
         SaveNoteTopAppBar(
