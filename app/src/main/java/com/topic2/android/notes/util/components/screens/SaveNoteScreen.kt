@@ -31,6 +31,7 @@ import com.topic2.android.notes.domain.model.NEW_NOTE_ID
 import com.topic2.android.notes.domain.model.NoteModel
 import com.topic2.android.notes.routing.NotesRouter
 import com.topic2.android.notes.routing.Screen
+import androidx.compose.material.Switch
 
 
 
@@ -198,6 +199,26 @@ private fun SaveNoteTopAppBar(
 }
 
 @Composable
+private  fun NoteCheckOption(
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+){
+Row(
+    Modifier
+        .padding(8.dp)
+        .padding(top = 16.dp)
+) {
+    Text(
+        text = "Can note be cheked off?", modifier = Modifier.weight(1f)
+    )
+    Switch(
+        checked = isChecked,
+        onCheckedChange = onCheckedChange, modifier = Modifier.padding( start = 8.dp)
+    )
+}
+}
+
+@Composable
 private fun  PickedColor(color:ColorModel){
     Row(
         Modifier
@@ -228,7 +249,11 @@ fun SaveNoteTopAppBarPreview() {
         onOpenColorPickerClick = {}
     ){}
 }
-
+@Preview
+@Composable
+fun NoteCheckOptionPreview(){
+    NoteCheckOption(false){}
+}
 @Preview
 @Composable
 fun PickedColorPreview(){
