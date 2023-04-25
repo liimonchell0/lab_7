@@ -1,6 +1,7 @@
 package com.topic2.android.notes.util.components
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
@@ -19,15 +20,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.topic2.android.notes.domain.model.NoteModel
-import com.topic2.android.notes.theme.rwGreen
 import com.topic2.android.notes.util.fromHex
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun Note(
     note: NoteModel,
-    onNoteClick: (NoteModel) -> Unit ={},
-    onNoteCheckedChange: (NoteModel) -> Unit ={}
+    onNoteClick: (NoteModel) -> Unit = {},
+    onNoteCheckedChange: (NoteModel) -> Unit = {},
+    isSelected: Boolean = false
 ) {
     val backgroundShape: Shape = RoundedCornerShape(4.dp)
     Row(
@@ -74,7 +76,7 @@ fun Note(
             )
         }
 
-        if (note.isCheckedOff !=null)
+        if (note.isCheckedOff != null)
         Checkbox(
             checked = note.isCheckedOff,
             onCheckedChange = {isChecked ->
@@ -90,6 +92,5 @@ fun Note(
 }
 @Preview
 @Composable
-fun NotePreview(){
-    Note(note = NoteModel(1, "Заметка 1 ", "Содержимое 1", null))
-}
+private fun NotePreview(){
+    Note(note = NoteModel(1, "Заметка 1 ", "Содержимое 1", null))}
