@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
+@ExperimentalMaterialApi
 fun NotesScreen(viewModel: MainViewModel) {
     val notes: List<NoteModel> by viewModel
         .notesNotInTrash
@@ -91,6 +92,7 @@ fun NotesScreen(viewModel: MainViewModel) {
 
 
 @Composable
+@ExperimentalMaterialApi
 private fun NotesList(
     notes: List<NoteModel>,
     onNoteCheckedChange: (NoteModel) -> Unit,
@@ -111,6 +113,7 @@ private fun NotesList(
 
 @Preview
 @Composable
+@ExperimentalMaterialApi
 private fun  NotesListPreview(){
     NotesList(
         notes = listOf(
