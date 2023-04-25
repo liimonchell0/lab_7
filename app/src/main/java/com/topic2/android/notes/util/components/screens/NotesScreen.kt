@@ -12,7 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.currentComposer
-import com.topic2.android.notes.util.components.TopAppBar
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,11 +34,23 @@ fun NotesScreen(viewModel: MainViewModel) {
 
     Scaffold(topBar = {
         TopAppBar(
-            title ="Notes" ,
-            icon = Icons.Filled.List, onIconClick = {
-                coroutineScope.launch {
-                    scaffoldState.drawerState.open()
-                }
+            title ={
+                Text(text = "Notes",
+                    color = MaterialTheme.colors.onPrimary
+                )
+            },
+            navigationIcon = {
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    }
+                ) {
+                Icon(imageVector = Icons.Filled.List ,
+                    contentDescription ="Drawer Button" )
+            }
+
             }
         )
 
