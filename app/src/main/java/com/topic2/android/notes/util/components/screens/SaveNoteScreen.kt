@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -199,6 +200,26 @@ private fun SaveNoteTopAppBar(
 }
 
 @Composable
+private fun ContentTextField(
+    modifier: Modifier = Modifier,
+    label: String,
+    text: String,
+    onTextChange:(String) -> Unit
+){
+    TextField(
+        value = text,
+        onValueChange = onTextChange,
+        label = { Text(label)},
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = MaterialTheme.colors.surface
+        )
+    )
+}
+
+@Composable
 private  fun NoteCheckOption(
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit
@@ -248,6 +269,16 @@ fun SaveNoteTopAppBarPreview() {
         onSaveNoteClick = {},
         onOpenColorPickerClick = {}
     ){}
+}
+
+@Preview
+@Composable
+fun ContentTextFieldPreview(){
+    ContentTextField(
+        label = "Title",
+        text = "",
+        onTextChange = {}
+    )
 }
 @Preview
 @Composable
