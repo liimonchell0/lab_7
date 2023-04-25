@@ -8,7 +8,6 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +23,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.painterResource
 import com.topic2.android.notes.R
@@ -33,7 +31,8 @@ import com.topic2.android.notes.domain.model.NoteModel
 import com.topic2.android.notes.routing.NotesRouter
 import com.topic2.android.notes.routing.Screen
 import androidx.compose.material.Switch
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.topic2.android.notes.util.components.Note
 import kotlinx.coroutines.launch
 
@@ -49,6 +48,9 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
 
     val bottomDrawerState: BottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
+    val moveNoteToTrashDialogShowState: MutableState<Boolean> = rememberSaveable{
+        mutableStateOf(false)
+    }
     Scaffold(topBar = {
         val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
         SaveNoteTopAppBar(
@@ -59,7 +61,7 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
             onSaveNoteClick = { viewModel.saveNote(noteEntry) },
             onOpenColorPickerClick = {
                 coroutineScope.launch { bottomDrawerState.open() }
-            }, onDeleteNoteClick = { viewModel.moveNoteToTrash(noteEntry) }
+            }, onDeleteNoteClick = { moveNoteToTrashDialogShowState.value = true }
         )
 
     },
@@ -80,12 +82,37 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
                             viewModel.onNoteEntryChange(updateNoteEntery)
                         }
                     )
-                }
+                },
             )
+                if (moveNoteToTrashDialogShowState.value){
+                    AlertDialog(
+                        onDismissRequest = {moveNoteToTrashDialogShowState.value = false
+                        },
+                        title = {
+                            Text("Move note to the trash?")
+                        },
+                        text = {
+                            Text("Are you sure you want"+
+                                    "move this note to the trash?"
+                            )
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { viewModel.moveNoteToTrash(noteEntry)
+                            }) {
+                                Text("Confirm")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { moveNoteToTrashDialogShowState.value = false
+                            }) {
+                                Text("Dismiss")
+                            }
+                        }
+                    )
+                }
         }
     )
 }
-
 
 @Composable
 private fun ColorPicket(
