@@ -7,11 +7,10 @@ import com.topic2.android.notes.domain.model.NoteModel
 import com.topic2.android.notes.viewmodel.MainViewModel
 import com.topic2.android.notes.util.components.Note
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.currentComposer
 import com.topic2.android.notes.util.components.TopAppBar
 import androidx.compose.runtime.getValue
@@ -52,6 +51,18 @@ fun NotesScreen(viewModel: MainViewModel) {
                             }
                         }
             )
+        },
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+                               FloatingActionButton(onClick = { viewModel.onCreateNewNoteClick() },
+                                   contentColor = MaterialTheme.colors.background,
+                                   content = {
+                                       Icon(
+                                           imageVector = Icons.Filled.Add,
+                                           contentDescription = "Add Note Button"
+                                       )
+                                   }
+                               )
         },
         content = {
             if (notes.isNotEmpty()) {
