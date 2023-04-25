@@ -1,5 +1,6 @@
 package com.topic2.android.notes.util.components.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.clickable
@@ -22,12 +23,36 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.painterResource
 import com.topic2.android.notes.R
+import com.topic2.android.notes.domain.model.NEW_NOTE_ID
+import com.topic2.android.notes.domain.model.NoteModel
+import com.topic2.android.notes.routing.NotesRouter
+import com.topic2.android.notes.routing.Screen
 
+
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SaveNoteScreen(viewModel: MainViewModel){
 
+fun SaveNoteScreen(viewModel: MainViewModel){
+val noteEntry: NoteModel by viewModel.noteEntry.observeAsState(NoteModel())
+
+    Scaffold(topBar = {
+        val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
+        SaveNoteTopAppBar(
+            isEditingMode = isEditingMode,
+            onBackClick = { NotesRouter.navigateTo(Screen.Notes)
+                          },
+            onSaveNoteClick = {},
+            onOpenColorPickerClick = {}, onDeleteNoteClick = {}
+        )
+
+        },
+        content = {}
+    )
 }
 
 
