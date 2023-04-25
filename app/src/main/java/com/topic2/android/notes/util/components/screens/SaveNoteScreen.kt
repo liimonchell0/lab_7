@@ -33,37 +33,58 @@ import com.topic2.android.notes.domain.model.NoteModel
 import com.topic2.android.notes.routing.NotesRouter
 import com.topic2.android.notes.routing.Screen
 import androidx.compose.material.Switch
+import androidx.compose.runtime.rememberCoroutineScope
 import com.topic2.android.notes.util.components.Note
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
+@ExperimentalMaterialApi
 
-fun SaveNoteScreen(viewModel: MainViewModel){
-val noteEntry: NoteModel by viewModel.noteEntry.observeAsState(NoteModel())
+fun SaveNoteScreen(viewModel: MainViewModel) {
+    val noteEntry: NoteModel by viewModel.noteEntry.observeAsState(NoteModel())
+    val colors: List<ColorModel> by viewModel.colors
+        .observeAsState(listOf())
 
+    val bottomDrawerState: BottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(topBar = {
         val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
         SaveNoteTopAppBar(
             isEditingMode = isEditingMode,
-            onBackClick = { NotesRouter.navigateTo(Screen.Notes)
-                          },
-            onSaveNoteClick = { viewModel.saveNote(noteEntry)},
-            onOpenColorPickerClick = {}, onDeleteNoteClick = {viewModel.moveNoteToTrash(noteEntry)}
+            onBackClick = {
+                NotesRouter.navigateTo(Screen.Notes)
+            },
+            onSaveNoteClick = { viewModel.saveNote(noteEntry) },
+            onOpenColorPickerClick = {
+                coroutineScope.launch { bottomDrawerState.open() }
+            }, onDeleteNoteClick = { viewModel.moveNoteToTrash(noteEntry) }
         )
 
-        },
+    },
         content = {
-            SaveNoteContent(note = noteEntry,
-                onNoteChange ={
-                    updateNoteEntery ->
-                    viewModel.onNoteEntryChange(updateNoteEntery)
-                } )
+            BottomDrawer(drawerState = bottomDrawerState,
+                drawerContent = {
+                    ColorPicket(colors = colors,
+                        onColorSelect = { color ->
+                            val newNoteEntry = noteEntry.copy(color = color)
+                            viewModel.onNoteEntryChange(newNoteEntry)
+                        }
+                    )
+                },
+                content = {
+                    SaveNoteContent(
+                        note = noteEntry,
+                        onNoteChange = { updateNoteEntery ->
+                            viewModel.onNoteEntryChange(updateNoteEntery)
+                        }
+                    )
+                }
+            )
         }
     )
 }
-
-
 
 
 @Composable
